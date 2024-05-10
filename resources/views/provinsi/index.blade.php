@@ -32,14 +32,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($kecamatans as $key => $kecamatan)
+                                @foreach ($provinsis as $key => $provinsi)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $kecamatan->kd_kecamatan }}</td>
-                                        <td>{{ $kecamatan->nm_kecamatan }}</td>
+                                        <td>{{ $provinsi->kd_provinsi }}</td>
+                                        <td>{{ $provinsi->nm_provinsi }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $kecamatan->id }}">Edit</button>
-                                            <form action="{{ route('kecamatan.destroy', $kecamatan->id) }}" method="POST" style="display: inline-block;">
+                                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $provinsi->id }}">Edit</button>
+                                            <form action="{{ route('provinsi.destroy', $provinsi->id) }}" method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -65,46 +65,46 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kecamatan.store') }}" method="POST">
+                    <form action="{{ route('provinsi.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="kd_kecamatan">Kode Provinsi</label>
-                            <!-- Tambahkan atribut id="last_kd_kecamatan" pada input -->
-                            <input type="text" class="form-control" name="kd_kecamatan" value="{{ $new_kd_kecamatan }}" readonly>
+                            <label for="kd_provinsi">Kode Provinsi</label>
+                            <!-- Tambahkan atribut id="last_kd_provinsi" pada input -->
+                            <input type="text" class="form-control" name="kd_provinsi" value="{{ $new_kd_provinsi }}" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="nm_kecamatan">Nama Provinsi</label>
-                            <input type="text" class="form-control" id="nm_kecamatan" name="nm_kecamatan">
+                            <label for="nm_provinsi">Nama Provinsi</label>
+                            <input type="text" class="form-control" id="nm_provinsi" name="nm_provinsi">
                         </div>
-                        <button type="submit" class="btn btn-primary">Simpan Kecamatan</button>
+                        <button type="submit" class="btn btn-primary">Simpan provinsi</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal Edit Kecamatan -->
-    @foreach ($kecamatans as $kecamatan)
-        <div class="modal fade" id="editModal{{ $kecamatan->id }}" tabindex="-1" role="dialog" aria-labelledby="editModal{{ $kecamatan->id }}Label" aria-hidden="true">
+    <!-- Modal Edit provinsi -->
+    @foreach ($provinsis as $provinsi)
+        <div class="modal fade" id="editModal{{ $provinsi->id }}" tabindex="-1" role="dialog" aria-labelledby="editModal{{ $provinsi->id }}Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editModal{{ $kecamatan->id }}Label">Edit Provinsi</h5>
+                        <h5 class="modal-title" id="editModal{{ $provinsi->id }}Label">Edit Provinsi</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('kecamatan.update', $kecamatan->id) }}" method="POST">
+                        <form action="{{ route('provinsi.update', $provinsi->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="kd_kecamatan">Kode Provinsi</label>
-                                <input type="text" class="form-control" id="kd_kecamatan" name="kd_kecamatan" value="{{ $kecamatan->kd_kecamatan }}">
+                                <label for="kd_provinsi">Kode Provinsi</label>
+                                <input type="text" class="form-control" id="kd_provinsi" name="kd_provinsi" value="{{ $provinsi->kd_provinsi }}">
                             </div>
                             <div class="form-group">
-                                <label for="nm_kecamatan">Nama Provinsi</label>
-                                <input type="text" class="form-control" id="nm_kecamatan" name="nm_kecamatan" value="{{ $kecamatan->nm_kecamatan }}">
+                                <label for="nm_provinsi">Nama Provinsi</label>
+                                <input type="text" class="form-control" id="nm_provinsi" name="nm_provinsi" value="{{ $provinsi->nm_provinsi }}">
                             </div>
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
@@ -115,14 +115,14 @@
         </div>
     @endforeach
 
-    <!-- Script untuk mengatur nomor urut Kode Kecamatan -->
+    <!-- Script untuk mengatur nomor urut Kode provinsi -->
     <script>
     $('#tambahModal').on('shown.bs.modal', function () {
-        var lastKdKecamatan = $('#last_kd_kecamatan').val();
-        var nextNumber = parseInt(lastKdKecamatan.substring(1)) + 1;
-        var nextKdKecamatan = 'K' + ('00' + nextNumber).slice(-2); // Format nomor dengan 2 digit
+        var lastKdprovinsi = $('#last_kd_provinsi').val();
+        var nextNumber = parseInt(lastKdprovinsi.substring(1)) + 1;
+        var nextKdprovinsi = 'P' + ('00' + nextNumber).slice(-2); // Format nomor dengan 2 digit
 
-        $('#kd_kecamatan').val(nextKdKecamatan);
+        $('#kd_provinsi').val(nextKdprovinsi);
     });
 </script>
 

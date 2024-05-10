@@ -8,7 +8,7 @@
     <!-- Create New Berita Button -->
     <div class="row">
     <div class="col-md-12">
-    <form action="{{ route('posts.provinsi') }}" method="GET" class="d-inline-block">
+    <form action="{{ route('prediksi.provinsi') }}" method="GET" class="d-inline-block">
     @csrf
     <div class="form-row align-items-center">
         <div class="col-auto">

@@ -8,7 +8,7 @@
     <!-- Create New Berita Button -->
     <div class="row">
     <div class="col-md-12">
-    <form action="{{ route('posts.provinsi') }}" method="GET" class="d-inline-block">
+    <form action="{{ route('prediksi.provinsi') }}" method="GET" class="d-inline-block">
     @csrf
     <div class="form-row align-items-center">
         <div class="col-auto">
@@ -34,7 +34,7 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
             @if ($datas->isNotEmpty())
-                <h6 class="m-0 font-weight-bold text-primary">Prediksi Jumlah Produksi Padi Provinsi {{ $datas->first()->nm_provinsi }}</h6>
+                <h5 class="m-0 font-weight-bold text-primary" style="color: black;">Prediksi Jumlah Produksi Padi Provinsi {{ $datas->first()->nm_provinsi }}</h5>
                 @endif
             </div>
             <div class="card-body">
@@ -45,9 +45,36 @@
                             <th>No.</th>
                             <th>Tahun</th>
                             <th>Jumlah Produksi</th>
-                            <th>X</th>
-                            <th>XX</th>
-                            <th>XY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($datas as $key => $data)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $data->tahun }}</td>
+                            <td>{{ $data->produksi }}</td>
+                            
+                        </tr>
+                        @endforeach
+
+                    </tbody>
+                    </table><br>
+                    <h5 style="font-weight: bold;" class="text-primary">Perhitungan Double Exponantial Smoothing</h5>
+                    <div style="overflow-x: auto;">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>S't</th>
+                            <th>S"t</th>
+                            <th>at</th>
+                            <th>bt</th>
+                            <th>prediksi</th>
+                            <th>error*</th>
+                            <th>Absolute error</th>
+                            <th>e*e</th>
+                            <th>PE</th>
+                            <th>Alpha</th>
                         </tr>
                     </thead>
 
@@ -56,39 +83,38 @@
                         @foreach ($datas as $key => $data)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $data->tahun }}</td>
-                            <td>{{ $data->produksi }}</td>
-                            <td>{{ $key }}</td>
-                            <td>{{ $key * $key }}</td>
-                            <td>{{ $key * $data->produksi }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             
                         </tr>
                         @endforeach
                         <tr>
-                            <td colspan="2">Jumlah</td>
-                            <td>{{ $jumlah_y }}</td>
-                            <td>{{ $jumlah_x }}</td>
-                            <td>{{ $jumlah_xx }}</td>
-                            <td>{{ $jumlah_xy }}</td>
+                            <td colspan="7">Rata-Rata</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <td colspan="2">Rata-rata</td>
-                            <td>{{ $rata2_y }}</td>
-                            <td>{{ $rata2_x }}</td>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">B1</td>
-                            <td colspan="4">{{ $b1 }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">B0</td>
-                            <td colspan="4">{{ $b0 }}</td>
+                            <td colspan="7"></td>
+                            <td style="font-weight: bold;">MADE</td>
+                            <td style="font-weight: bold;">MSE</td>
+                            <td style="font-weight: bold;">MAPE</td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
+                </div><br>
                 <div>
-                        <p>Prediksi Produksi Padi untuk tahun berikutnya adalah {{ $prediksi }}</p>
+                        <h5 style="font-weight: bold;" class="text-primary" >Prediksi Produksi Padi untuk tahun 2024 adalah </h5>
                     </div>
                 </div>
             </div>

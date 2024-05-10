@@ -98,9 +98,9 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="{{route('kecamatan.index')}}">
+                <a class="nav-link" href="{{route('provinsi.index')}}">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Data Kecamatan</span></a>
+                    <span>Data Provinsi</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('data.index')}}">
@@ -111,6 +111,11 @@
                 <a class="nav-link" href="{{route('posts.index')}}">
                     <i class="fas fa-fw fa-chart-line"></i>
                     <span>Forecasting</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('prediksi.index')}}">
+                    <i class="fas fa-fw fa-chart-line"></i>
+                    <span>Smoothing</span></a>
             </li>
 
             <!-- Divider -->

@@ -2,9 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\ProvinsiController;
+use App\Http\Controllers\PrediksiController;
 use App\Http\Controllers\DataController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,8 +25,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [BeritaController::class, 'index'])->name('show.berita');
-Route::get('/komentar/{id}', [BeritaController::class, 'show'])->name('show.detail');
-Route::post('/komentar/{postId}/comments', [BeritaController::class, 'storeComment'])->name('posts.comments.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -42,12 +41,12 @@ Route::middleware(['auth', 'is_admin'])->group(function(){
     // Route::get('/admin/post',[PostController::class,'showDashboard'])->name('admin.post');
     Route::get('/dashboard', [PostController::class, 'dashboard'])->name('posts.dashboard');
 
-    Route::get('/kecamatan', [KecamatanController::class, 'index'])->name('kecamatan.index');
-    Route::get('/kecamatan/tambah', [KecamatanController::class, 'create'])->name('kecamatan.tambah');
-    Route::post('/kecamatan/tambah', [KecamatanController::class, 'store'])->name('kecamatan.store');
-    Route::get('/kecamatan/edit/{id}', [KecamatanController::class, 'edit'])->name('kecamatan.edit');
-    Route::put('/kecamatan/edit/{id}', [KecamatanController::class, 'update'])->name('kecamatan.update');
-    Route::delete('/kecamatan/hapus/{id}', [KecamatanController::class, 'destroy'])->name('kecamatan.destroy');
+    Route::get('/provinsi', [ProvinsiController::class, 'index'])->name('provinsi.index');
+    Route::get('/provinsi/tambah', [ProvinsiController::class, 'create'])->name('provinsi.tambah');
+    Route::post('/provinsi/tambah', [ProvinsiController::class, 'store'])->name('provinsi.store');
+    Route::get('/provinsi/edit/{id}', [ProvinsiController::class, 'edit'])->name('provinsi.edit');
+    Route::put('/provinsi/edit/{id}', [ProvinsiController::class, 'update'])->name('provinsi.update');
+    Route::delete('/provinsi/hapus/{id}', [ProvinsiController::class, 'destroy'])->name('provinsi.destroy');
 
 
     Route::get('/dataaktual', [DataController::class, 'index'])->name('data.index');
@@ -58,7 +57,11 @@ Route::middleware(['auth', 'is_admin'])->group(function(){
     Route::delete('/data/hapus/{id}', [DataController::class, 'destroy'])->name('data.destroy');
 
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-    Route::get('/prediksikecamatan', [PostController::class, 'getDataByKecamatan'])->name('posts.kecamatan');
+    Route::get('/prediksiprovinsi', [PostController::class, 'getDataByProvinsi'])->name('posts.provinsi');
+
+    Route::get('/smoothing', [PrediksiController::class, 'index'])->name('prediksi.index');
+    Route::get('/smoothingprovinsi', [PrediksiController::class, 'getDataByProvinsi'])->name('prediksi.provinsi');
+
     Route::get('/posts/show/{id}', [PostController::class, 'show'])->name('posts.show');
     Route::get('/posts/create', [PostController::class, 'create'])->name('create');
     // Rute untuk menangani form tambah post

@@ -30,7 +30,7 @@
                         <tr>
                             <th rowspan="2">No.</th>
                             <th rowspan="2">Tahun</th>
-                            <th rowspan="2">Kecamatan</th>
+                            <th rowspan="2">Provinsi</th>
                             <th colspan="3" class="text-center">Padi Sawah</th> <!-- Menggabungkan 3 kolom menjadi 1 -->
                             <th rowspan="2">Opsi</th>
                         </tr>
@@ -47,7 +47,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $data->tahun }}</td>
-                            <td>{{ $data->kd_kecamatan }}</td>
+                            <td>{{ $data->kd_provinsi }}</td>
                             <td>{{ $data->luas_panen }}</td>
                             <td>{{ $data->produktivitas }}</td>
                             <td>{{ $data->produksi }}</td>
@@ -69,7 +69,7 @@
         </div>
     </div>
 </div>
-<!-- Modal Tambah Kecamatan -->
+<!-- Modal Tambah provinsi -->
 <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -92,11 +92,11 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="kd_kecamatan">Kecamatan</label>
-                            <select class="form-control" name="kd_kecamatan" id="kd_kecamatan">
-                                <option value="">Pilih Kecamatan</option>
-                                @foreach ($kecamatans as $kecamatan)
-                                    <option value="{{ $kecamatan->kd_kecamatan }}">{{ $kecamatan->kd_kecamatan }} - {{ $kecamatan->nm_kecamatan }}</option>
+                            <label for="kd_provinsi">Provinsi</label>
+                            <select class="form-control" name="kd_provinsi" id="kd_provinsi">
+                                <option value="">Pilih Provinsi</option>
+                                @foreach ($provinsis as $provinsi)
+                                    <option value="{{ $provinsi->kd_provinsi }}">{{ $provinsi->kd_provinsi }} - {{ $provinsi->nm_provinsi }}</option>
                                 @endforeach
                             </select>
 
@@ -118,7 +118,7 @@
         </div>
     </div>
 
-    <!-- Modal Edit Kecamatan -->
+    <!-- Modal Edit provinsi -->
     @foreach ($datas as $data)
         <div class="modal fade" id="editModal{{ $data->id }}" tabindex="-1" role="dialog" aria-labelledby="editModal{{ $data->id }}Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -143,11 +143,11 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="kd_kecamatan">Kecamatan</label>
-                                <select class="form-control" name="kd_kecamatan" id="kd_kecamatan">
-                                    <option value="">Pilih Kecamatan</option>
-                                    @foreach ($kecamatans as $kecamatan)
-                                        <option value="{{ $kecamatan->kd_kecamatan }}" {{ $data->kd_kecamatan == $kecamatan->kd_kecamatan ? 'selected' : '' }}>{{ $kecamatan->kd_kecamatan }} - {{ $kecamatan->nm_kecamatan }}</option>
+                                <label for="kd_provinsi">Provinsi</label>
+                                <select class="form-control" name="kd_provinsi" id="kd_provinsi">
+                                    <option value="">Pilih Provinsi</option>
+                                    @foreach ($provinsis as $provinsi)
+                                        <option value="{{ $provinsi->kd_provinsi }}" {{ $data->kd_provinsi == $provinsi->kd_provinsi ? 'selected' : '' }}>{{ $provinsi->kd_provinsi }} - {{ $provinsi->nm_provinsi }}</option>
                                     @endforeach
                                 </select>
                             </div>

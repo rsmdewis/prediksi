@@ -5,38 +5,39 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\Data;
-use App\Models\Kecamatan;
+use App\Models\Provinsi;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    
     public function dashboard()
     {
         
-        $totalKecamatan = Kecamatan::count();
+        $totalProvinsi = Provinsi::count();
         $totalData = Data::count();
         return view('posts.dashboard', [
-            'totalKecamatan' => $totalKecamatan,
+            'totalProvinsi' => $totalProvinsi,
             'totalData' => $totalData
         ]);
     }
-    
     public function index(Request $request)
     {
         
-        $kecamatans = Kecamatan::all();
-        return view('posts.index', compact('kecamatans'));
+        $provinsis = Provinsi::all();
+        return view('posts.index', compact('provinsis'));
     }
-    public function getDataByKecamatan(Request $request)
+    
+    public function getDataByProvinsi(Request $request)
 {
     // Ambil data berdasarkan kd_kecamatan
-    $kd_kecamatan = $request->kd_kecamatan;
-    $datas = Data::join('kecamatans', 'data.kd_kecamatan', '=', 'kecamatans.kd_kecamatan')
-                    ->where('data.kd_kecamatan', $kd_kecamatan)
-                    ->select('data.*', 'kecamatans.nm_kecamatan')
+    $kd_provinsi = $request->kd_provinsi;
+    $datas = Data::join('provinsis', 'data.kd_provinsi', '=', 'provinsis.kd_provinsi')
+                    ->where('data.kd_provinsi', $kd_provinsi)
+                    ->select('data.*', 'provinsis.nm_provinsi')
     ->get();
-    $kecamatans = Kecamatan::all();
+    $provinsis = Provinsi::all();
 
     $jumlah_data = count($datas);
 
@@ -97,7 +98,7 @@ class PostController extends Controller
     }
 
     // Lakukan sesuatu dengan data, misalnya:
-    return view('posts.prediksi', compact('datas', 'kecamatans', 'jumlah_x', 'jumlah_y', 'jumlah_xx', 'jumlah_xy', 'rata2_x', 'rata2_y', 'b1', 'b0', 'prediksi'));
+    return view('posts.prediksi', compact('datas', 'provinsis', 'jumlah_x', 'jumlah_y', 'jumlah_xx', 'jumlah_xy', 'rata2_x', 'rata2_y', 'b1', 'b0', 'prediksi'));
 
 }
 

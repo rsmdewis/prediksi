@@ -68,20 +68,7 @@
     </script>
 
     <!-- Vue component for post item -->
-    <script>
-        Vue.component('post-item', {
-            props: ['post'],
-            template: '#post-item-template'
-        });
-
-        new Vue({
-            el: '#postList',
-            data: {
-                posts: @json($posts) // Initialize posts array with PHP data
-            }
-        });
-    </script>
-
+    
 
 </body>
 

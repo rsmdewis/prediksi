@@ -11,7 +11,7 @@ class Data extends Model
     protected $table = 'data';
 
     protected $fillable = [
-        'kd_kecamatan',
+        'kd_provinsi',
         'tahun',
         'luas_panen',
         'produktivitas',

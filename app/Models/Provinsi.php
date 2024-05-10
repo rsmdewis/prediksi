@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kecamatan extends Model
+class Provinsi extends Model
 {
     use HasFactory;
-    protected $table = 'kecamatans';
+    protected $table = 'provinsis';
 
     protected $fillable = [
-        'kd_kecamatan',
-        'nm_kecamatan',
+        'kd_provinsi',
+        'nm_provinsi',
     ];
 
     // Definisikan relasi dengan model Data
     public function data()
     {
-        return $this->hasMany(Data::class, 'kd_kecamatan', 'kd_kecamatan');
+        return $this->hasMany(Data::class, 'kd_provinsi', 'kd_provinsi');
     }
 }

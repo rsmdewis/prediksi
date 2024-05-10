@@ -4,22 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Data;
-use App\Models\Kecamatan;
+use App\Models\Provinsi;
 
 class DataController extends Controller
 {
     public function index()
     {
         $datas = Data::all();
-        $kecamatans = Kecamatan::all();
-        return view('data.index', compact('datas', 'kecamatans'));
+        $provinsis = Provinsi::all();
+        return view('data.index', compact('datas', 'provinsis'));
     }
     public function store(Request $request)
     {
         // Validasi data yang diterima
         $validatedData = $request->validate([
             'tahun' => 'required|integer',
-            'kd_kecamatan' => 'required',
+            'kd_provinsi' => 'required',
             'luas_panen' => 'required|numeric|min:0',
             'produksi' => 'required|numeric|min:0',
         ]);
@@ -30,7 +30,7 @@ class DataController extends Controller
         // Simpan data ke dalam database
         Data::create([
             'tahun' => $validatedData['tahun'], 
-            'kd_kecamatan' => $validatedData['kd_kecamatan'], 
+            'kd_provinsi' => $validatedData['kd_provinsi'], 
             'luas_panen' => $validatedData['luas_panen'],
             'produksi' => $validatedData['produksi'],
             'produktivitas' => $produktivitas, // Simpan nilai produktivitas
@@ -44,7 +44,7 @@ class DataController extends Controller
         // Validasi data yang diterima
         $validatedData = $request->validate([
             'tahun' => 'required|integer',
-            'kd_kecamatan' => 'required',
+            'kd_provinsi' => 'required',
             'luas_panen' => 'required|numeric|min:0',
             'produksi' => 'required|numeric|min:0',
         ]);
@@ -54,7 +54,7 @@ class DataController extends Controller
 
         // Update data aktual
         $data->tahun = $validatedData['tahun'];
-        $data->kd_kecamatan = $validatedData['kd_kecamatan'];
+        $data->kd_provinsi = $validatedData['kd_provinsi'];
         $data->luas_panen = $validatedData['luas_panen'];
         $data->produksi = $validatedData['produksi'];
 
