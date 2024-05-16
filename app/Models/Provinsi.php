@@ -13,8 +13,13 @@ class Provinsi extends Model
     protected $fillable = [
         'kd_provinsi',
         'nm_provinsi',
+        'alpha',
     ];
-
+    public function getAlphaAttribute($value)
+    {
+        // Format nilai alpha untuk menampilkan dua angka di belakang koma
+        return number_format($value, 2);
+    }
     // Definisikan relasi dengan model Data
     public function data()
     {

@@ -17,4 +17,9 @@ class Data extends Model
         'produktivitas',
         'produksi',
     ];
+    protected $casts = [
+        'luas_panen' => 'decimal:2',
+        'produktivitas' => 'decimal:2',
+        'produksi' => 'decimal:2',
+    ];
 }

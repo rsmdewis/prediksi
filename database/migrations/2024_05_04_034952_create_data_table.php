@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('kd_provinsi', 20);
             $table->string('tahun', 16);
-            $table->integer('luas_panen');
-            $table->integer('produktivitas');
-            $table->integer('produksi');
+            $table->decimal('luas_panen', 10, 2); // Maksimal 2 angka di belakang koma
+            $table->decimal('produktivitas', 10, 2);
+            $table->decimal('produksi', 10, 2);
             $table->timestamps();
         });
     }

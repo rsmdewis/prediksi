@@ -103,11 +103,11 @@
                         </div>
                         <div class="form-group">
                             <label for="luas_panen">Luas Panen</label>
-                            <input type="number" class="form-control" name="luas_panen" min="0">
+                            <input type="text" class="form-control" name="luas_panen" min="0">
                         </div>
                         <div class="form-group">
                             <label for="produksi">Produksi</label>
-                            <input type="number" class="form-control" name="produksi" min="0">
+                            <input type="text" class="form-control" name="produksi" min="0">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -153,11 +153,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="luas_panen">Luas Panen</label>
-                                <input type="number" class="form-control" name="luas_panen" min="0" value="{{ $data->luas_panen }}">
+                                <input type="text" class="form-control" name="luas_panen" min="0" value="{{ $data->luas_panen }}">
                             </div>
                             <div class="form-group">
                                 <label for="produksi">Produksi</label>
-                                <input type="number" class="form-control" name="produksi" min="0" value="{{ $data->produksi }}">
+                                <input type="text" class="form-control" name="produksi" min="0" value="{{ $data->produksi }}">
                             </div>
 
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>

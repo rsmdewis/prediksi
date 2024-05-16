@@ -52,7 +52,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $data->tahun }}</td>
-                            <td>{{ $data->produksi }}</td>
+                            <td>{{ number_format($data->produksi, 2, ',', '.') }}</td>
                             
                         </tr>
                         @endforeach
@@ -65,8 +65,8 @@
                 <thead>
                         <tr>
                             <th>No.</th>
-                            <th>S't</th>
-                            <th>S"t</th>
+                            <th>A't</th>
+                            <th>A"t</th>
                             <th>at</th>
                             <th>bt</th>
                             <th>prediksi</th>
@@ -74,7 +74,6 @@
                             <th>Absolute error</th>
                             <th>e*e</th>
                             <th>PE</th>
-                            <th>Alpha</th>
                         </tr>
                     </thead>
 
@@ -83,25 +82,24 @@
                         @foreach ($datas as $key => $data)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ isset($A1[$key]) ? number_format($A1[$key], 2, ',', '.') : 'N/A' }}</td>
+                            <td>{{ isset($A2[$key]) ? number_format($A2[$key], 2, ',', '.') : 'N/A' }}</td>
+                            <td>{{ isset($at[$key]) ? number_format($at[$key], 2, ',', '.') : 'N/A' }}</td>
+                            <td>{{ isset($bt[$key]) ? number_format($bt[$key], 2, ',', '.') : 'N/A' }}</td>
+                            <td>{{ isset($F[$key]) ? number_format($F[$key], 2, ',', '.') : ' ' }}</td>
+                            <td>{{ isset($error[$key]) ? number_format($error[$key], 2, ',', '.') : ' ' }}</td>
+                            <td>{{ isset($absolute_error[$key]) ? number_format($absolute_error[$key], 2, ',', '.') : ' ' }}</td>
+                            <td>{{ isset($squared_error[$key]) ? number_format($squared_error[$key], 2, ',', '.') : ' ' }}</td>
+                            <td>{{ isset($percentage_error[$key]) ? number_format($percentage_error[$key] * 100) . '%' : ' ' }}</td>
+
                             
                         </tr>
                         @endforeach
                         <tr>
-                            <td colspan="7">Rata-Rata</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td colspan="7" style="text-align: center; font-weight: bold;">Rata-Rata</td>
+                            <td>{{ number_format($avg_absolute_error, 2) }}</td>
+                            <td>{{ number_format($avg_squared_error, 2) }}</td>
+                            <td>{{ number_format($avg_percentage_error * 100) }}%</td>
                         </tr>
                         <tr>
                             <td colspan="7"></td>
@@ -114,15 +112,93 @@
                 </table>
                 </div><br>
                 <div>
-                        <h5 style="font-weight: bold;" class="text-primary" >Prediksi Produksi Padi untuk tahun 2024 adalah </h5>
-                    </div>
+                    
+                        <h5 style="font-weight: bold;" class="text-primary" >Prediksi Produksi Padi untuk tahun 2024 adalah {{ number_format($last_prediction, 2, ',', '.') }}</h5>
+                    </div><br>
                 </div>
+                <table class="table table-bordered" id="dataTablePrediksi" width="100%" cellspacing="0">
+                <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Tahun</th>
+                            <th>Produksi</th>
+                            <th>Prediksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($datas as $key => $data)
+                        <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $data->tahun }}</td>
+                        <td>{{ number_format($data->produksi, 2, ',', '.') }}</td>
+                        <td>{{ isset($F[$key]) ? number_format($F[$key], 2, ',', '.') : ' ' }}</td>
+                            
+                        </tr>
+                        
+                        @endforeach
+                        <tr>
+                            <td>7</td>
+                            <td>2024</td>
+                            <td></td>
+                            <td>{{ number_format($last_prediction, 2, ',', '.') }}</td>
+
+                        </tr>
+
+                    </tbody>
+                    </table>
             </div>
         </div>
         
     </div>
     
 </div>
+<canvas id="barChart" width="800" height="400"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Mendapatkan data dari tabel HTML
+    var years = [];
+    var production = [];
+    var prediction = [];
+    var table = document.getElementById('dataTablePrediksi');
+    var rows = table.getElementsByTagName('tr');
+    
+    for (var i = 1; i < rows.length - 1; i++) {
+        var cells = rows[i].getElementsByTagName('td');
+        years.push(cells[1].innerText);
+        production.push(parseFloat(cells[2].innerText.replace(',', '.')));
+        prediction.push(parseFloat(cells[3].innerText.replace(',', '.')));
+    }
+
+    // Membuat diagram batang
+    var ctx = document.getElementById('barChart').getContext('2d');
+    var barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: years,
+            datasets: [{
+                label: 'Produksi',
+                data: production,
+                backgroundColor: 'rgba(255, 99, 132, 0.6)', // Warna merah lebih tegas
+                borderColor: 'rgba(255, 99, 132, 1)', // Warna border merah
+                borderWidth: 1
+            }, {
+                label: 'Prediksi',
+                data: prediction,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)', // Warna biru lebih tegas
+                borderColor: 'rgba(54, 162, 235, 1)', // Warna border biru
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
 <br>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
