@@ -152,7 +152,10 @@
     </div>
     
 </div>
-<canvas id="barChart" width="800" height="400"></canvas>
+<div>
+    <canvas id="barChart" width="800" height="400"></canvas>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Mendapatkan data dari tabel HTML
@@ -165,9 +168,22 @@
     for (var i = 1; i < rows.length - 1; i++) {
         var cells = rows[i].getElementsByTagName('td');
         years.push(cells[1].innerText);
-        production.push(parseFloat(cells[2].innerText.replace(',', '.')));
-        prediction.push(parseFloat(cells[3].innerText.replace(',', '.')));
+
+        var productionValue = cells[2].innerText.replace(/\./g, '').replace(',', '.');
+        production.push(productionValue ? parseFloat(productionValue) : null);
+
+        var predictionValue = cells[3].innerText.replace(/\./g, '').replace(',', '.');
+        prediction.push(predictionValue ? parseFloat(predictionValue) : null);
     }
+
+    // Tambahkan data untuk tahun 2024
+    years.push('2024');
+    production.push(null); // Atur ke null jika tidak ada data produksi
+    prediction.push(parseFloat('{{ number_format($last_prediction, 2, '.', '') }}'));
+
+    // Membersihkan data dari nilai null
+    var cleanedProduction = production.map(value => value !== null ? value : 0);
+    var cleanedPrediction = prediction.map(value => value !== null ? value : 0);
 
     // Membuat diagram batang
     var ctx = document.getElementById('barChart').getContext('2d');
@@ -177,13 +193,13 @@
             labels: years,
             datasets: [{
                 label: 'Produksi',
-                data: production,
+                data: cleanedProduction,
                 backgroundColor: 'rgba(255, 99, 132, 0.6)', // Warna merah lebih tegas
                 borderColor: 'rgba(255, 99, 132, 1)', // Warna border merah
                 borderWidth: 1
             }, {
                 label: 'Prediksi',
-                data: prediction,
+                data: cleanedPrediction,
                 backgroundColor: 'rgba(54, 162, 235, 0.6)', // Warna biru lebih tegas
                 borderColor: 'rgba(54, 162, 235, 1)', // Warna border biru
                 borderWidth: 1
@@ -198,6 +214,8 @@
         }
     });
 </script>
+
+
 
 <br>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
