@@ -7,27 +7,27 @@
     <!-- Create New Berita Button -->
     <div class="row">
     <div class="col-md-12">
-    <form action="{{ route('prediksi.provinsi') }}" method="GET" class="d-inline-block">
-    @csrf
-    <div class="form-row align-items-center">
-        <div class="col-auto">
-            <select class="form-control" name="kd_provinsi" id="kd_provinsi">
-                <option value="">Pilih Provinsi</option>
-                @foreach ($provinsis as $provinsi)
-                    <option value="{{ $provinsi->kd_provinsi }}">{{ $provinsi->kd_provinsi }} - {{ $provinsi->nm_provinsi }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary">
-                <span class="icon text-white-50">
-                    <i class="fas fa-chart-line"></i>
-                </span>
-                <span class="text">Prediksi</span>
-            </button>
-        </div>
-    </div>
-</form>
+    <form id="predictionForm" action="{{ route('prediksi.provinsi') }}" method="GET" class="d-inline-block">
+                @csrf
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <select class="form-control" name="kd_provinsi" id="kd_provinsi">
+                            <option value="">Pilih Provinsi</option>
+                            @foreach ($provinsis as $provinsi)
+                                <option value="{{ $provinsi->kd_provinsi }}">{{ $provinsi->kd_provinsi }} - {{ $provinsi->nm_provinsi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-chart-line"></i>
+                            </span>
+                            <span class="text">Prediksi</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
 
         <br><br>
         <div class="card shadow mb-4">
@@ -164,6 +164,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+
+document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            var kd_provinsi = document.getElementById('kd_provinsi').value;
+            if (!kd_provinsi) {
+                event.preventDefault(); // Mencegah pengiriman form
+                alert('Harap memilih provinsi sebelum melakukan prediksi.');
+            }
+        });
+
     // Mendapatkan data dari tabel HTML
     var years = [];
     var production = [];
