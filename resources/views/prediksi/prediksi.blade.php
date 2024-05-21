@@ -73,11 +73,13 @@
                             <th>Absolute error</th>
                             <th>e*e</th>
                             <th>PE</th>
+                            <th>Alpha</th>
                         </tr>
                     </thead>
 
 
                     <tbody>
+                    <?php $alphaDisplayed = false; ?>
                         @foreach ($datas as $key => $data)
                         <tr>
                             <td>{{ $key + 1 }}</td>
@@ -89,8 +91,13 @@
                             <td>{{ isset($error[$key]) ? number_format($error[$key], 2, ',', '.') : ' ' }}</td>
                             <td>{{ isset($absolute_error[$key]) ? number_format($absolute_error[$key], 2, ',', '.') : ' ' }}</td>
                             <td>{{ isset($squared_error[$key]) ? number_format($squared_error[$key], 2, ',', '.') : ' ' }}</td>
-                            <td>{{ isset($percentage_error[$key]) ? number_format($percentage_error[$key] * 100) . '%' : ' ' }}</td>
-
+                            <td>{{ isset($percentage_error[$key]) ? number_format($percentage_error[$key] * 100, 2) . '%' : ' ' }}</td>
+                            @if (!$alphaDisplayed)
+                <td>{{ number_format($optimalAlpha, 2, ',', '.') }}</td>
+                @php $alphaDisplayed = true; @endphp
+            @else
+                <td></td>
+            @endif
                             
                         </tr>
                         @endforeach
@@ -98,13 +105,13 @@
                             <td colspan="7" style="text-align: center; font-weight: bold;">Rata-Rata</td>
                             <td>{{ number_format($avg_absolute_error, 2) }}</td>
                             <td>{{ number_format($avg_squared_error, 2) }}</td>
-                            <td>{{ number_format($avg_percentage_error * 100) }}%</td>
-                        </tr>
+                            <td>{{ number_format($avg_percentage_error * 100, 2) }}%</td>
+                        </tr> 
                         <tr>
                             <td colspan="7"></td>
-                            <td style="font-weight: bold;">MADE</td>
-                            <td style="font-weight: bold;">MSE</td>
-                            <td style="font-weight: bold;">MAPE</td>
+                            <td style="text-align: center; font-weight: bold;">MADE</td>
+                            <td style="text-align: center; font-weight: bold;">MSE</td>
+                            <td style="text-align: center; font-weight: bold;">MAPE</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -112,7 +119,7 @@
                 </div><br>
                 <div>
                     
-                        <h5 style="font-weight: bold;" class="text-primary" >Prediksi Produksi Padi untuk tahun 2024 adalah {{ number_format($last_prediction, 2, ',', '.') }}</h5>
+                        <h5 style="font-weight: bold;" class="text-primary" >Prediksi Produksi Padi untuk tahun {{ $datas->last()->tahun + 1 }} adalah {{ number_format($last_prediction, 2, ',', '.') }}</h5>
                     </div><br>
                 </div>
                 <table class="table table-bordered" id="dataTablePrediksi" width="100%" cellspacing="0">
@@ -136,8 +143,8 @@
                         
                         @endforeach
                         <tr>
-                            <td>7</td>
-                            <td>2024</td>
+                            <td>{{ count($datas) + 1 }}</td>
+                            <td>{{ $datas->last()->tahun + 1 }}</td>
                             <td></td>
                             <td>{{ number_format($last_prediction, 2, ',', '.') }}</td>
 
@@ -174,9 +181,11 @@
         var predictionValue = cells[3].innerText.replace(/\./g, '').replace(',', '.');
         prediction.push(predictionValue ? parseFloat(predictionValue) : null);
     }
+    // Dapatkan tahun terakhir dari PHP dan tambahkan 1
+    var lastYear = parseInt('{{ $datas->last()->tahun }}') + 1;
 
-    // Tambahkan data untuk tahun 2024
-    years.push('2024');
+    // Tambahkan data untuk tahun berikutnya
+    years.push(lastYear.toString());
     production.push(null); // Atur ke null jika tidak ada data produksi
     prediction.push(parseFloat('{{ number_format($last_prediction, 2, '.', '') }}'));
 

@@ -61,6 +61,8 @@ Route::middleware(['auth', 'is_admin'])->group(function(){
 
     Route::get('/smoothing', [PrediksiController::class, 'index'])->name('prediksi.index');
     Route::get('/smoothingprovinsi', [PrediksiController::class, 'getDataByProvinsi'])->name('prediksi.provinsi');
+    Route::get('/rekap/provinsi', [PrediksiController::class, 'getRekap'])->name('prediksi.getrekap');
+    Route::get('/rekap', [PrediksiController::class, 'rekap'])->name('prediksi.rekap');
 
     Route::get('/posts/show/{id}', [PostController::class, 'show'])->name('posts.show');
     Route::get('/posts/create', [PostController::class, 'create'])->name('create');

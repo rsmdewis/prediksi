@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('kd_provinsi', 20)->unique();
             $table->string('nm_provinsi', 50);
-            $table->decimal('alpha', 3, 2)->default(0.00);
             $table->timestamps();
         });
     }

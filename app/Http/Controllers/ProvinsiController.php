@@ -34,14 +34,14 @@ public function store(Request $request)
     $validatedData = $request->validate([
         'kd_provinsi' => 'required|unique:provinsis|max:20',
         'nm_provinsi' => 'required|max:50',
-        'alpha' => 'nullable|numeric|between:0,1', // Tambahkan validasi untuk alpha
+        // 'alpha' => 'nullable|numeric|between:0,1', // Tambahkan validasi untuk alpha
     ]);
 
     // Buat instansi provinsi baru
     $provinsi = new Provinsi();
     $provinsi->kd_provinsi = $request->kd_provinsi;
     $provinsi->nm_provinsi = $request->nm_provinsi;
-    $provinsi->alpha = $request->alpha ?? 0.00; // Set nilai default untuk alpha
+    // $provinsi->alpha = $request->alpha ?? 0.00; // Set nilai default untuk alpha
     $provinsi->save();
 
     // Redirect ke halaman index provinsi atau ke halaman lain yang sesuai
@@ -54,7 +54,7 @@ public function update(Request $request, $id)
     $request->validate([
         'kd_provinsi' => 'required|unique:provinsis,kd_provinsi,'.$id.',id|max:20',
         'nm_provinsi' => 'required|max:50',
-        'alpha' => 'nullable|numeric|between:0,1', // Tambahkan validasi untuk alpha
+        // 'alpha' => 'nullable|numeric|between:0,1', // Tambahkan validasi untuk alpha
     ]);
 
     // Temukan provinsi berdasarkan ID
@@ -63,7 +63,7 @@ public function update(Request $request, $id)
     // Perbarui data provinsi
     $provinsi->kd_provinsi = $request->input('kd_provinsi');
     $provinsi->nm_provinsi = $request->input('nm_provinsi');
-    $provinsi->alpha = $request->alpha ?? 0.00; // Set nilai default untuk alpha
+    // $provinsi->alpha = $request->alpha ?? 0.00; // Set nilai default untuk alpha
     $provinsi->save();
 
     // Redirect ke halaman index provinsi atau ke halaman lain yang sesuai

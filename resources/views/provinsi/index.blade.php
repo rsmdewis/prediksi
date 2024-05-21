@@ -28,7 +28,7 @@
                                     <th>No.</th>
                                     <th>Kode Provinsi</th>
                                     <th>Nama Provinsi</th>
-                                    <th>Alpha</th>
+                                    
                                     <th>Opsi</th>
                                 </tr>
                             </thead>
@@ -38,7 +38,7 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $provinsi->kd_provinsi }}</td>
                                         <td>{{ $provinsi->nm_provinsi }}</td>
-                                        <td>{{ $provinsi->alpha }}</td>
+                                        
                                         <td>
                                             <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $provinsi->id }}">Edit</button>
                                             <form action="{{ route('provinsi.destroy', $provinsi->id) }}" method="POST" style="display: inline-block;">
@@ -78,10 +78,7 @@
                             <label for="nm_provinsi">Nama Provinsi</label>
                             <input type="text" class="form-control" id="nm_provinsi" name="nm_provinsi">
                         </div>
-                        <div class="form-group">
-                            <label for="alpha">Alpha</label>
-                            <input type="text" class="form-control" id="alpha" name="alpha" step="0.01" min="0" max="1" value="0.00">
-                        </div>
+                        
                         <button type="submit" class="btn btn-primary">Simpan provinsi</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                     </form>
@@ -112,10 +109,7 @@
                                 <label for="nm_provinsi">Nama Provinsi</label>
                                 <input type="text" class="form-control" id="nm_provinsi" name="nm_provinsi" value="{{ $provinsi->nm_provinsi }}">
                             </div>
-                            <div class="form-group">
-                                <label for="alpha">Alpha</label>
-                                <input type="number" class="form-control" id="alpha" name="alpha" step="0.01" min="0" max="1" value="{{ $provinsi->alpha ?? '0.00' }}">
-                            </div>
+                            
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                         </form>

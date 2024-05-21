@@ -107,15 +107,16 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Data Aktual</span></a>
             </li>
+            
             <li class="nav-item">
-                <a class="nav-link" href="{{route('posts.index')}}">
+                <a class="nav-link" href="{{route('prediksi.index')}}">
                     <i class="fas fa-fw fa-chart-line"></i>
                     <span>Forecasting</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('prediksi.index')}}">
+                <a class="nav-link" href="{{route('prediksi.rekap')}}">
                     <i class="fas fa-fw fa-chart-line"></i>
-                    <span>Smoothing</span></a>
+                    <span>Rekap Provinsi</span></a>
             </li>
 
             <!-- Divider -->
