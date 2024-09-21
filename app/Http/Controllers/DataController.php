@@ -10,7 +10,7 @@ class DataController extends Controller
 {
     public function index()
     {
-        $datas = Data::all();
+        $datas = Data::paginate(10);
         $provinsis = Provinsi::all();
         return view('data.index', compact('datas', 'provinsis'));
     }

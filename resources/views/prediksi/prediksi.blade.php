@@ -37,33 +37,25 @@
                 @endif
             </div>
             <div class="card-body">
+            <div class="card shadow mb-4">
+                <div class="math-equations"><br>
+                    <h5 style="text-align: center; font-weight: bold;">Rumus Double Exponantial Smoothing</h5>
+                    <p>\[ A'_t = \alpha X_t + (1 - \alpha)A'(t - 1) \]</p>
+                    <p>\[ A''_t = \alpha A'_t + (1 - \alpha)A''(t - 1) \]</p>
+                    <p>\[ a_t = 2A'_t - A''_t \]</p>
+                    <p>\[ b_t = \frac{\alpha}{1 - \alpha}(A'_t - A''_t) \]</p><br>
+                </div>
+                </div>
                 <div class="table-responsive" id="data-table-container">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Tahun</th>
-                            <th>Jumlah Produksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($datas as $key => $data)
-                        <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $data->tahun }}</td>
-                            <td>{{ number_format($data->produksi, 2, ',', '.') }}</td>
-                            
-                        </tr>
-                        @endforeach
-
-                    </tbody>
-                    </table><br>
+                
                     <h5 style="font-weight: bold;" class="text-primary">Perhitungan Double Exponantial Smoothing</h5>
                     <div style="overflow-x: auto;">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                         <tr>
                             <th>No.</th>
+                            <th>Tahun</th>
+                            <th>Produksi</th>
                             <th>A't</th>
                             <th>A"t</th>
                             <th>at</th>
@@ -83,6 +75,8 @@
                         @foreach ($datas as $key => $data)
                         <tr>
                             <td>{{ $key + 1 }}</td>
+                            <td>{{ $data->tahun }}</td>
+                            <td>{{ number_format($data->produksi, 2, ',', '.') }}</td>
                             <td>{{ isset($A1[$key]) ? number_format($A1[$key], 2, ',', '.') : 'N/A' }}</td>
                             <td>{{ isset($A2[$key]) ? number_format($A2[$key], 2, ',', '.') : 'N/A' }}</td>
                             <td>{{ isset($at[$key]) ? number_format($at[$key], 2, ',', '.') : 'N/A' }}</td>
@@ -102,7 +96,7 @@
                         </tr>
                         @endforeach
                         <tr>
-                            <td colspan="7" style="text-align: center; font-weight: bold;">Rata-Rata</td>
+                            <td colspan="9" style="text-align: center; font-weight: bold;">Rata-Rata</td>
                             <td>{{ number_format($avg_absolute_error, 2) }}</td>
                             <td>{{ number_format($avg_squared_error, 2) }}</td>
                             <td>{{ number_format($avg_percentage_error * 100, 2) }}%</td>
@@ -116,12 +110,15 @@
                         </tr>
                     </tbody>
                 </table>
+
+                
                 </div><br>
                 <div>
                     
                         <h5 style="font-weight: bold;" class="text-primary" >Prediksi Produksi Padi untuk tahun {{ $datas->last()->tahun + 1 }} adalah {{ number_format($last_prediction, 2, ',', '.') }}</h5>
                     </div><br>
                 </div>
+                
                 <table class="table table-bordered" id="dataTablePrediksi" width="100%" cellspacing="0">
                 <thead>
                         <tr>
@@ -159,78 +156,80 @@
     
 </div>
 <div>
-    <canvas id="barChart" width="800" height="400"></canvas>
+    <canvas id="lineChart" width="800" height="400"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-
 document.getElementById('predictionForm').addEventListener('submit', function(event) {
-            var kd_provinsi = document.getElementById('kd_provinsi').value;
-            if (!kd_provinsi) {
-                event.preventDefault(); // Mencegah pengiriman form
-                alert('Harap memilih provinsi sebelum melakukan prediksi.');
-            }
-        });
-
-    // Mendapatkan data dari tabel HTML
-    var years = [];
-    var production = [];
-    var prediction = [];
-    var table = document.getElementById('dataTablePrediksi');
-    var rows = table.getElementsByTagName('tr');
-    
-    for (var i = 1; i < rows.length - 1; i++) {
-        var cells = rows[i].getElementsByTagName('td');
-        years.push(cells[1].innerText);
-
-        var productionValue = cells[2].innerText.replace(/\./g, '').replace(',', '.');
-        production.push(productionValue ? parseFloat(productionValue) : null);
-
-        var predictionValue = cells[3].innerText.replace(/\./g, '').replace(',', '.');
-        prediction.push(predictionValue ? parseFloat(predictionValue) : null);
+    var kd_provinsi = document.getElementById('kd_provinsi').value;
+    if (!kd_provinsi) {
+        event.preventDefault(); // Mencegah pengiriman form
+        alert('Harap memilih provinsi sebelum melakukan prediksi.');
     }
-    // Dapatkan tahun terakhir dari PHP dan tambahkan 1
-    var lastYear = parseInt('{{ $datas->last()->tahun }}') + 1;
+});
 
-    // Tambahkan data untuk tahun berikutnya
-    years.push(lastYear.toString());
-    production.push(null); // Atur ke null jika tidak ada data produksi
-    prediction.push(parseFloat('{{ number_format($last_prediction, 2, '.', '') }}'));
+// Mendapatkan data dari tabel HTML
+var years = [];
+var production = [];
+var prediction = [];
+var table = document.getElementById('dataTablePrediksi');
+var rows = table.getElementsByTagName('tr');
 
-    // Membersihkan data dari nilai null
-    var cleanedProduction = production.map(value => value !== null ? value : 0);
-    var cleanedPrediction = prediction.map(value => value !== null ? value : 0);
+for (var i = 1; i < rows.length - 1; i++) {
+    var cells = rows[i].getElementsByTagName('td');
+    years.push(cells[1].innerText);
 
-    // Membuat diagram batang
-    var ctx = document.getElementById('barChart').getContext('2d');
-    var barChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: years,
-            datasets: [{
-                label: 'Produksi',
-                data: cleanedProduction,
-                backgroundColor: 'rgba(255, 99, 132, 0.6)', // Warna merah lebih tegas
-                borderColor: 'rgba(255, 99, 132, 1)', // Warna border merah
-                borderWidth: 1
-            }, {
-                label: 'Prediksi',
-                data: cleanedPrediction,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)', // Warna biru lebih tegas
-                borderColor: 'rgba(54, 162, 235, 1)', // Warna border biru
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+    var productionValue = cells[2].innerText.replace(/\./g, '').replace(',', '.');
+    production.push(productionValue ? parseFloat(productionValue) : null);
+
+    var predictionValue = cells[3].innerText.replace(/\./g, '').replace(',', '.');
+    prediction.push(predictionValue ? parseFloat(predictionValue) : null);
+}
+
+// Dapatkan tahun terakhir dari PHP dan tambahkan 1
+var lastYear = parseInt('{{ $datas->last()->tahun }}') + 1;
+
+// Tambahkan data untuk tahun berikutnya
+years.push(lastYear.toString());
+production.push(null); // Atur ke null jika tidak ada data produksi
+prediction.push(parseFloat('{{ number_format($last_prediction, 2, '.', '') }}'));
+
+// Membuat diagram garis
+var ctx = document.getElementById('lineChart').getContext('2d');
+var lineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: years,
+        datasets: [{
+            label: 'Produksi',
+            data: production,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)', // Warna merah transparan
+            borderColor: 'rgba(255, 99, 132, 1)', // Warna garis merah
+            borderWidth: 3, // Menebalkan garis produksi
+            spanGaps: false, // Tidak menghubungkan titik-titik yang hilang
+            fill: false
+        }, {
+            label: 'Prediksi',
+            data: prediction,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Warna biru transparan
+            borderColor: 'rgba(54, 162, 235, 1)', // Warna garis biru
+            borderWidth: 3, // Menebalkan garis prediksi
+            spanGaps: false, // Tidak menghubungkan titik-titik yang hilang
+            fill: false
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
             }
         }
-    });
+    }
+});
 </script>
+
+
 
 
 
@@ -256,6 +255,8 @@ document.getElementById('predictionForm').addEventListener('submit', function(ev
         });
     });
 </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 
 

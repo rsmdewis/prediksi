@@ -4,58 +4,94 @@
     <!-- Content Row -->
     <!-- Create New Berita Button -->
     <div class="row">
-        <div class="col-md-12">
-            <button type="button" class="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#tambahModal">
-                <span class="icon text-white-50">
-                    <i class="fas fa-plus"></i>
-                </span>
-                <span class="text">Tambah Provinsi</span>
-            </button>
-        </div>
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#tambahModal">
+            <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Tambah Provinsi</span>
+        </button>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Daftar Provinsi</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Provinsi</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Kode Provinsi</th>
+                                <th>Nama Provinsi</th>
+                                <th>Opsi</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                            @php
+                                // Hitung nomor urutan untuk halaman saat ini
+                                $startNumber = ($provinsis->currentPage() - 1) * $provinsis->perPage() + 1;
+                            @endphp
+                            @foreach ($provinsis as $key => $provinsi)
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Kode Provinsi</th>
-                                    <th>Nama Provinsi</th>
-                                    
-                                    <th>Opsi</th>
+                                    <td>{{ $startNumber + $key }}</td>
+                                    <td>{{ $provinsi->kd_provinsi }}</td>
+                                    <td>{{ $provinsi->nm_provinsi }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $provinsi->id }}">Edit</button>
+                                        <form action="{{ route('provinsi.destroy', $provinsi->id) }}" method="POST" style="display: inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($provinsis as $key => $provinsi)
-                                    <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $provinsi->kd_provinsi }}</td>
-                                        <td>{{ $provinsi->nm_provinsi }}</td>
-                                        
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $provinsi->id }}">Edit</button>
-                                            <form action="{{ route('provinsi.destroy', $provinsi->id) }}" method="POST" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
+@if ($provinsis->hasPages())
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {{-- Tombol Previous --}}
+            @if ($provinsis->onFirstPage())
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link" href="{{ $provinsis->previousPageUrl() }}" rel="prev">&laquo;</a>
+                </li>
+            @endif
+
+            {{-- Tautan Nomor Halaman --}}
+            @foreach ($provinsis->links()->elements[0] as $page => $url)
+                <li class="page-item {{ $provinsis->currentPage() == $page ? 'active' : '' }}">
+                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                </li>
+            @endforeach
+
+            {{-- Tombol Next --}}
+            @if ($provinsis->hasMorePages())
+                <li class="page-item">
+                    <a class="page-link" href="{{ $provinsis->nextPageUrl() }}" rel="next">&raquo;</a>
+                </li>
+            @else
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+            @endif
+        </ul>
+    </nav>
+@endif
 
     <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

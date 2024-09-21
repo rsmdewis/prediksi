@@ -9,7 +9,7 @@ class ProvinsiController extends Controller
 {
     public function index()
 {
-    $provinsis = Provinsi::all();
+    $provinsis = Provinsi::paginate(10);
     
     // Mendapatkan kode provinsi terakhir
     $lastprovinsi = Provinsi::latest()->first();

@@ -43,9 +43,13 @@
 
 
                     <tbody>
+                    @php
+                                // Hitung nomor urutan untuk halaman saat ini
+                                $startNumber = ($datas->currentPage() - 1) * $datas->perPage() + 1;
+                            @endphp
                         @foreach ($datas as $key => $data)
                         <tr>
-                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $startNumber + $key }}</td>
                             <td>{{ $data->tahun }}</td>
                             <td>{{ $data->kd_provinsi }}</td>
                             <td>{{ $data->luas_panen }}</td>
@@ -69,6 +73,40 @@
         </div>
     </div>
 </div>
+@if ($datas->hasPages())
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {{-- Tombol Previous --}}
+            @if ($datas->onFirstPage())
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link" href="{{ $datas->previousPageUrl() }}" rel="prev">&laquo;</a>
+                </li>
+            @endif
+
+            {{-- Tautan Nomor Halaman --}}
+            @foreach ($datas->links()->elements[0] as $page => $url)
+                <li class="page-item {{ $datas->currentPage() == $page ? 'active' : '' }}">
+                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                </li>
+            @endforeach
+
+            {{-- Tombol Next --}}
+            @if ($datas->hasMorePages())
+                <li class="page-item">
+                    <a class="page-link" href="{{ $datas->nextPageUrl() }}" rel="next">&raquo;</a>
+                </li>
+            @else
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+            @endif
+        </ul>
+    </nav>
+@endif
 <!-- Modal Tambah provinsi -->
 <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

@@ -55,7 +55,7 @@
     <br>
 
     <div>
-        <canvas id="barChart" width="800" height="400"></canvas>
+        <canvas id="lineChart" width="800" height="400"></canvas>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -97,7 +97,7 @@
 
                         $('#dataCard').show();
 
-                        // Membuat diagram batang
+                        // Membuat diagram garis
                         var years = [];
                         var production = [];
                         var prediction = [];
@@ -140,23 +140,27 @@
             }
 
             function updateChart(years, production, prediction) {
-                var ctx = document.getElementById('barChart').getContext('2d');
-                var barChart = new Chart(ctx, {
-                    type: 'bar',
+                var ctx = document.getElementById('lineChart').getContext('2d');
+                var lineChart = new Chart(ctx, {
+                    type: 'line',
                     data: {
                         labels: years,
                         datasets: [{
                             label: 'Produksi',
                             data: production,
-                            backgroundColor: 'rgba(255, 99, 132, 0.6)', // Warna merah lebih tegas
-                            borderColor: 'rgba(255, 99, 132, 1)', // Warna border merah
-                            borderWidth: 1
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)', // Warna merah transparan
+                            borderColor: 'rgba(255, 99, 132, 1)', // Warna garis merah
+                            borderWidth: 3, // Menebalkan garis produksi
+                            tension: 0, // Garis tidak bergelombang
+                            fill: false
                         }, {
                             label: 'Prediksi',
                             data: prediction,
-                            backgroundColor: 'rgba(54, 162, 235, 0.6)', // Warna biru lebih tegas
-                            borderColor: 'rgba(54, 162, 235, 1)', // Warna border biru
-                            borderWidth: 1
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Warna biru transparan
+                            borderColor: 'rgba(54, 162, 235, 1)', // Warna garis biru
+                            borderWidth: 3, // Menebalkan garis prediksi
+                            tension: 0, // Garis tidak bergelombang
+                            fill: false
                         }]
                     },
                     options: {
